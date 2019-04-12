@@ -14,6 +14,8 @@ library(tfdeploy)
 library(tidyverse)
 library(PepTools)
 
+use_implementation("keras")
+
 pep_file <- get_file(
   "ran_peps_netMHCpan40_predicted_A0201_reduced_cleaned_balanced.tsv",
   origin = "https://git.io/vb3Xa"
@@ -91,7 +93,7 @@ y_pred <- model %>%
 
 y_real <- y_test %>%
   apply(1, function(x) {
-    return(which(x == 1) - 1)
+    return(which(x == 1) - 1) %>%
   })
 
 results <- tibble(
@@ -126,4 +128,4 @@ results %>%
 
 # save model for deployment -----------------------------------------------
 
-model %>% tfdeploy::export_savedmodel("saved_models")
+model %>% tensorflow::export_savedmodel(export_dir_base =  "saved_models")
