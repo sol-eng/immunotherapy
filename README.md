@@ -7,11 +7,22 @@
 
 <!-- badges: end -->
 
-The goal of immunotherapy is to demonstrate building a TensorFlow model
-on immunotherapy data.
+The goal of `immunotherapy` is to demonstrate building a TensorFlow
+model on immunotherapy data.
 
 This is based on the the original work by Leon Eyrich Jessen, and his
 blog post on RViews: [“Deep Learning for Cancer
 Immunotherapy”](https://blogs.rstudio.com/tensorflow/posts/2018-01-29-dl-for-cancer-immunotherapy/)
+
+## Requirements
+
+Packages for sequence logos and peptides
+
+``` r
+devtools::install_github("omarwagih/ggseqlogo")
+devtools::install_github("leonjessen/PepTools")
+```
+
+## Sample output
 
 ![](https://blogs.rstudio.com/tensorflow/posts/2018-01-29-dl-for-cancer-immunotherapy/images/sequence-motif.png)
