@@ -1,29 +1,31 @@
 # https://blogs.rstudio.com/tensorflow/posts/2018-01-29-dl-for-cancer-immunotherapy/
 
-# # Keras + TensorFlow and it's dependencies
-# install.packages("keras")
-# library(keras)
-# install_keras()
-#
-# # Tidyverse (readr, ggplot2, etc.)
-# install.packages("tidyverse")
-#
 
 library(keras)
 library(tfdeploy)
 library(tidyverse)
+library(ggplot2)
+library(glue)
+library(ggseqlogo)
 library(PepTools)
 
 use_implementation("keras")
 
+# Download and cache the data locally
+
 pep_file <- get_file(
   "ran_peps_netMHCpan40_predicted_A0201_reduced_cleaned_balanced.tsv",
-  origin = "https://git.io/vb3Xa"
+  origin = "https://git.io/vb3Xa",
+  cache_subdir = "~/datasets"
 )
+
+
+# Import the data
+
 pep_dat <- read_tsv(file = pep_file)
 
-pep_dat %>% head()
 
+# Set up train and test samples
 
 x_train <- pep_dat %>%
   filter(data_type == "train") %>%
@@ -45,14 +47,16 @@ y_test <- pep_dat %>%
   pull(label_num) %>%
   array()
 
-dim(x_train)
-
+# Reshape the data into Python recognized format
 
 x_train <- array_reshape(x_train, c(nrow(x_train), 9 * 20))
 x_test <- array_reshape(x_test, c(nrow(x_test), 9 * 20))
 
 y_train <- to_categorical(y_train, num_classes = 3)
 y_test <- to_categorical(y_test, num_classes = 3)
+
+
+# Define the model
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 180, activation = "relu", input_shape = 180) %>%
@@ -70,17 +74,19 @@ model %>%
     metrics = c("accuracy")
   )
 
+# Train the model
+
 history <- model %>%
   fit(
     x_train, y_train,
-    epochs = 20,
+    epochs = 10,
     batch_size = 64,
     validation_split = 0.2
   )
 
 
+# Evaluate model performance
 
-library(ggplot2)
 plot(history)
 
 perf <- model %>%
@@ -92,25 +98,20 @@ y_pred <- model %>%
   predict_classes(x_test)
 
 y_real <- y_test %>%
-  apply(1, function(x) {
-    return(which(x == 1) - 1) %>%
-  })
+  apply(1, function(x) {which(x == 1) - 1 })
 
 results <- tibble(
-  y_real = y_real %>% factor(levels = 2:0),
-  y_pred = y_pred %>% factor(levels = 0:2),
+  measured = y_real %>% factor(levels = 0:2),
+  predicted = y_pred %>% factor(levels = 0:2),
   Correct = if_else(y_real == y_pred, "yes", "no") %>% factor()
 )
 
-library(glue)
 
 results %>%
-  ggplot(aes(x = y_pred, y = y_real, fill = Correct)) +
-  # geom_point() +
-  geom_tile(aes(fill = Correct), stat = "sum") +
-  geom_jitter(alpha = 0.5) +
+  ggplot(aes(colour = Correct)) +
+  geom_jitter(aes(x = 0, y = 0), alpha = 0.5) +
   ggtitle(
-    label = "Performance on 10% unseen data - Feed Forward Neural Network",
+    label = "Performance on 10% unseen data",
     subtitle = glue::glue("Accuracy = {round(perf$acc, 3) * 100}%")
   ) +
   xlab(
@@ -119,13 +120,20 @@ results %>%
   ylab(
     "Predicted\n(Class assigned by Keras / TensorFlow model)"
   ) +
-  scale_fill_manual(
+  scale_colour_manual(
     labels = c("No", "Yes"),
     values = c("red", "blue")
   ) +
-  theme_bw()
+  theme_bw() +
+  facet_grid(predicted ~ measured, labeller = label_both) +
+  ggplot2::theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank()
+  )
 
 
 # save model for deployment -----------------------------------------------
 
-model %>% tensorflow::export_savedmodel(export_dir_base =  "saved_models")
+model %>%
+  export_savedmodel(export_dir_base =  "saved_models")
