@@ -9,17 +9,16 @@
 
 library(plumber)
 
-source("consume_tf_api.R")
+source("3_consume_tf_api.R")
 
 #* @apiTitle Immunotherapy
 
 #* Predict peptide class
-#*
-#* @param peptide Character vector with peptide, eg. "LLTDAQRIV" or `c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV")`
-#* @get /predict_peptide_class
+#* @param peptide Character vector with peptide, eg. `"LLTDAQRIV"` or `c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV")`
+#* @get /predict
 function(peptide){
-  solo_url <- "https://colorado.rstudio.com/rsc/content/2328/"
-  predict_peptide_class(peptide = peptide, solo_url = solo_url)
+  solo_url <- "https://colorado.rstudio.com/rsc/content/2328/" # TensorFlow API
+  predict_peptide_class_fun(peptide = peptide, solo_url = solo_url)
 }
 
 
