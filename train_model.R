@@ -20,6 +20,7 @@ pep_file <- get_file(
 )
 
 
+
 # Import the data
 
 pep_dat <- read_tsv(file = pep_file)
@@ -100,9 +101,10 @@ y_pred <- model %>%
 y_real <- y_test %>%
   apply(1, function(x) {which(x == 1) - 1 })
 
+peptide_classes <- c("NB", "WB", "SB")
 results <- tibble(
-  measured = y_real %>% factor(levels = 0:2),
-  predicted = y_pred %>% factor(levels = 0:2),
+  measured = y_real %>% factor(levels = 0:2, labels = peptide_classes),
+  predicted = y_pred %>% factor(levels = 0:2, labels = peptide_classes),
   Correct = if_else(y_real == y_pred, "yes", "no") %>% factor()
 )
 
