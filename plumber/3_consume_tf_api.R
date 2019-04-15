@@ -8,8 +8,6 @@ predict_peptide_class_fun <- function(peptide, solo_url = "https://colorado.rstu
   if (substring(solo_url, nchar(solo_url)) != "/") solo_url <- paste0(solo_url, "/")
   api_url <- paste0(solo_url, "serving_default/predict")
 
-  print("1")
-
   peptide_classes <- c("NB", "WB", "SB")
 
   x_val <-
@@ -21,15 +19,11 @@ predict_peptide_class_fun <- function(peptide, solo_url = "https://colorado.rstu
     x_val
   ))
 
-  print("2")
-
   r <- POST(api_url, body = body, encode = "json", content_type_json())
-
-  print("3")
-
-  if (httr::http_error(r)) cat(http_status(r))
-
-  print("4")
+  if (httr::http_error(r)){
+    cat(http_status(r))
+    stop(http_status(r))
+  }
 
   a <-
     r %>%
