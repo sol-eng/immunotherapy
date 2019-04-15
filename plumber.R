@@ -15,9 +15,15 @@ source("consume_tf_api.R")
 
 #* Predict peptide class
 #*
-#* @param peptide Character vector with peptide
+#* @param peptide Character vector with peptide, eg. "LLTDAQRIV" or `c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV")`
 #* @get /predict_peptide_class
 function(peptide){
-  if (missing(solo_url) || is.null(solo_url)) solo_url <- "https://colorado.rstudio.com/rsc/content/2328/"
+  solo_url <- "https://colorado.rstudio.com/rsc/content/2328/"
   predict_peptide_class(peptide = peptide, solo_url = solo_url)
 }
+
+
+
+# source("consume_tf_api.R")
+# solo_url <- "https://colorado.rstudio.com/rsc/content/2328/"
+# predict_peptide_class(peptide = "LLTDAQRIV", solo_url = solo_url)
