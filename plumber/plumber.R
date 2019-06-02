@@ -14,10 +14,14 @@ source("3_consume_tf_api.R")
 #* @apiTitle Immunotherapy
 
 #* Predict peptide class
-#* @param peptide Character vector with peptide, eg. `"LLTDAQRIV"` or `c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV")`
+#* @param peptide Character vector with a single peptide, eg. `"LLTDAQRIV"` or comma separated, e.g. `"LLTDAQRIV, LMAFYLYEV, VMSPITLPT, SLHLTNCFV, RQFTCMIAV"`
 #* @get /predict
 function(peptide){
   solo_url <- "https://colorado.rstudio.com/rsc/content/2328/" # TensorFlow API
+
+  # split on commas and remove white space
+  peptide <- trimws(strsplit(peptide, ",")[[1]])
+
   predict_peptide_class_fun(peptide = peptide, solo_url = solo_url)
 }
 
