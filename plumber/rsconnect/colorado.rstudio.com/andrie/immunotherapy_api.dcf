@@ -5,6 +5,6 @@ account: andrie
 server: colorado.rstudio.com
 hostUrl: https://colorado.rstudio.com/rsc/__api__
 appId: 2336
-bundleId: 25877
+bundleId: 25886
 url: https://colorado.rstudio.com:443/rsc/content/2336/
-when: 1559473784.01094
+when: 1559654701.80516

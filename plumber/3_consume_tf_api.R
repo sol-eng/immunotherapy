@@ -3,7 +3,9 @@ library(PepTools)
 library(magrittr)
 library(reticulate)
 
-predict_peptide_class_fun <- function(peptide, solo_url = "https://colorado.rstudio.com/rsc/content/2328/"){
+library(config)
+
+predict_peptide_class_fun <- function(peptide, solo_url = config::get("solo_url_tensorflow")){
 
   if (substring(solo_url, nchar(solo_url)) != "/") solo_url <- paste0(solo_url, "/")
   api_url <- paste0(solo_url, "serving_default/predict")
