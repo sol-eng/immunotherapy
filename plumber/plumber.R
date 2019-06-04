@@ -8,6 +8,7 @@
 #
 
 library(plumber)
+library(config)
 
 source("3_consume_tf_api.R")
 
@@ -16,8 +17,10 @@ source("3_consume_tf_api.R")
 #* Predict peptide class
 #* @param peptide Character vector with a single peptide, eg. `"LLTDAQRIV"` or comma separated, e.g. `"LLTDAQRIV, LMAFYLYEV, VMSPITLPT, SLHLTNCFV, RQFTCMIAV"`
 #* @get /predict
-function(peptide){
-  solo_url <- "https://colorado.rstudio.com/rsc/content/2328/" # TensorFlow API
+function(peptide, solo_url){
+  if (missing(solo_url) || is.null(solo_url)) {
+    solo_url <- config::get("solo_url_tensorflow") # TensorFlow API
+  }
 
   # split on commas and remove white space
   peptide <- trimws(strsplit(peptide, ",")[[1]])
