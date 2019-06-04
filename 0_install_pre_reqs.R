@@ -10,7 +10,8 @@ pkgs <- c(
   "tidyverse",
   "ggplot2",
   "glue",
-  "config"
+  "config",
+  "withr"
 )
 
 to_install <- setdiff(pkgs, installed.packages()[, "Package"])

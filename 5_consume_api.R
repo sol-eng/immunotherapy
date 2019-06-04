@@ -1,7 +1,6 @@
 library(httr)
 
 predict_peptide <- function(peptide, solo_url = config::get("solo_url_plumber")){
-  solo_url = "https://colorado.rstudio.com/rsc/content/2337/"
   if (substring(solo_url, nchar(solo_url)) != "/") solo_url <- paste0(solo_url, "/")
   api_url <- paste0(solo_url, "/predict")
 
