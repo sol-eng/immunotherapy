@@ -59,7 +59,7 @@ DiagrammeR("
 ## Workflow
 
 
-```{r full_workflow, fig.height=3}
+```{r full_workflow, fig.height=2}
 edge_relations <- tibble::tribble(
   ~from, ~to, ~rel, ~comment, ~fontcolor,
   1, 2, "deploy", NA,        "grey20",
@@ -84,7 +84,7 @@ edges_as_nodes <- tibble::tribble(
     color = "transparent",
     fillcolor = "transparent",
     fontcolor = "blue",
-    fontsize = 4
+    fontsize = 8
   )
 
 node_df <- tibble::tribble(
@@ -99,7 +99,7 @@ node_df <- tibble::tribble(
     color = "aliceblue",
     fillcolor = "aliceblue",
     fontcolor = "black",
-    fontsize = 8
+    fontsize = 10
   ) %>% 
   bind_rows(edges_as_nodes) %>% 
   mutate(
@@ -114,6 +114,6 @@ create_graph(
   edges_df = edge_relations
 ) %>%
   set_edge_attr_to_display(attr = "rel") %>%
-  add_global_graph_attrs("inputscale", 0.75, "graph") %>% 
+  # add_global_graph_attrs("inputscale", 0.75, "graph") %>%
   render_graph()
 ```
