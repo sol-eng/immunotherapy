@@ -74,6 +74,22 @@ plot_peptide <- function(x, palette = "Blues"){
 plot_peptide("LLTDAQRIV")
 ```
 
+## Beyond peptides (other practical application)
+
+The machine learning task is quite simple, but also a good example of an extremely common modeling task:
+
+* Predict the class of an observation, based on some features of this observation
+* In the case of the peptides example, the observation is a text string, which is expanded into a 9x20 tensor, and the task is a ulti-class classification.
+
+Many other problems are very similar, for example:
+
+* Binary classificiation of credit card default
+* Multi-class classification of images
+* Preduction of customer churn (binary class)
+
+In the case of the peptides, the modeling task is very simple, allowing the focus on the overall production deployment process.  In many real-world situations the modeling task is likely to be much more complex.
+
+
 ## Workflow
 
 The objective is to create a TensorFlow model that can be called by user code. The user code sends a request as a peptide string and receives a response in the form of a data frame of predicted classes.
@@ -110,31 +126,31 @@ Then follow these steps:
 
 1. Publish the model to Connect
 
-  * At the moment there is no push-button deployment of TensorFlow models to Connect
-  * Run `2_publish_model.R`
-  * This publishes the model to Connect
-  * Change the permissions to be open the model to the world (no login required)
-  * Make a note of the "Solo URL"
+    * At the moment there is no push-button deployment of TensorFlow models to Connect
+    * Run `2_publish_model.R`
+    * This publishes the model to Connect
+    * Change the permissions to be open the model to the world (no login required)
+    * Make a note of the "Solo URL"
     
 1. Edit `config.yml` with solo url
 
-  * Add your solo url to `solo_url_tensorflow`
-    
+    * Add your solo url to `solo_url_tensorflow`
+      
 1. Publish the plumber API to Connect
 
-  * Run `4_publish_api.R`
-  * Change the permissions to be open the model to the world (no login required)
-  * Make a note of the "Solo URL"
-  * Try to execute the model from the Swagger page
+    * Run `4_publish_api.R`
+    * Change the permissions to be open the model to the world (no login required)
+    * Make a note of the "Solo URL"
+    * Try to execute the model from the Swagger page
     
 1. Edit `config.yml` with solo url
 
-  * Add your solo url to `solo_url_plumber`
+    * Add your solo url to `solo_url_plumber`
 
 1. Consume the model
 
-  * Open the file `5_consume_api.R`
-  * Run the code and watch the predictions flow in!
+    * Open the file `5_consume_api.R`
+    * Run the code and watch the predictions flow in!
 
 
     
