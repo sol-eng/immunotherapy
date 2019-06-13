@@ -11,7 +11,7 @@ withr::with_dir(
     api = ".",
     # server = "{server}",     # <<- edit this line if necessary
     # account = "{account}",   # <<- edit this line if necessary
-    appTitle = "immunotherapy_api",
+    appTitle = "Immunotherapy API",
     forceUpdate = TRUE
   )
 )
