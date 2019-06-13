@@ -1,5 +1,6 @@
 # https://blogs.rstudio.com/tensorflow/posts/2018-01-29-dl-for-cancer-immunotherapy/
 
+Sys.unsetenv("RETICULATE_PYTHON")
 
 library(keras)
 library(tfdeploy)
