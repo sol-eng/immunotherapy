@@ -10,7 +10,7 @@ library(glue)
 library(ggseqlogo)
 library(PepTools)
 
-use_implementation("keras")
+# use_implementation("keras")
 
 # Download and cache the data locally
 
