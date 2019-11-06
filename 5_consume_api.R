@@ -8,9 +8,11 @@ predict_peptide <- function(peptide,
     solo_url <- paste0(solo_url, "/")
   }
 
-  if(length(peptide > 1)) peptide <- paste(peptide, collapse = ",")
+  if(length(peptide > 1)) {
+    peptide <- paste(peptide, collapse = ",")
+  }
 
-  api_url <- paste0(solo_url, "/predict")
+  api_url <- paste0(solo_url, "predict")
 
   r <- GET(
     api_url,

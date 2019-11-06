@@ -9,6 +9,7 @@
 
 library(plumber)
 library(config)
+library(reticulate)
 
 source("3_consume_tf_api.R")
 
@@ -30,6 +31,8 @@ function(peptide, solo_url){
 
 
 
-# source("consume_tf_api.R")
-# solo_url <- "https://colorado.rstudio.com/rsc/content/2328/"
-# predict_peptide_class(peptide = "LLTDAQRIV", solo_url = solo_url)
+# peptide <- "LLTDAQRIV"
+
+# source("3_consume_tf_api.R")
+# solo_url <- config::get("solo_url_tensorflow")
+# predict_peptide_class_fun(peptide = "LLTDAQRIV", solo_url = solo_url)

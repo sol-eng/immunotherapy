@@ -52,15 +52,16 @@ y_test <- pep_dat %>%
 # Reshape the data into Python recognized format
 
 x_train <- array_reshape(x_train, c(nrow(x_train), 9 * 20))
-x_test <- array_reshape(x_test, c(nrow(x_test), 9 * 20))
+x_test  <- array_reshape(x_test, c(nrow(x_test), 9 * 20))
 
 y_train <- to_categorical(y_train, num_classes = 3)
-y_test <- to_categorical(y_test, num_classes = 3)
+y_test  <- to_categorical(y_test, num_classes = 3)
 
 
 # Define the model
 
-model <- keras_model_sequential() %>%
+model <-
+  keras_model_sequential() %>%
   layer_dense(units = 180, activation = "relu", input_shape = 180) %>%
   layer_dropout(rate = 0.4) %>%
   layer_dense(units = 90, activation = "relu") %>%
@@ -72,13 +73,14 @@ summary(model)
 model %>%
   compile(
     loss = "categorical_crossentropy",
-    optimizer = optimizer_rmsprop(),
+    optimizer = optimizer_rmsprop(epsilon = 1e-7),
     metrics = c("accuracy")
   )
 
 # Train the model
 
-history <- model %>%
+history <-
+  model %>%
   fit(
     x_train, y_train,
     epochs = 10,
@@ -104,7 +106,7 @@ y_real <- y_test %>%
 
 peptide_classes <- c("NB", "WB", "SB")
 results <- tibble(
-  measured = y_real %>% factor(levels = 0:2, labels = peptide_classes),
+  measured  = y_real %>% factor(levels = 0:2, labels = peptide_classes),
   predicted = y_pred %>% factor(levels = 0:2, labels = peptide_classes),
   Correct = if_else(y_real == y_pred, "yes", "no") %>% factor()
 )
@@ -115,7 +117,7 @@ results %>%
   geom_jitter(aes(x = 0, y = 0), alpha = 0.5) +
   ggtitle(
     label = "Performance on 10% unseen data",
-    subtitle = glue::glue("Accuracy = {round(perf$acc, 3) * 100}%")
+    subtitle = glue::glue("Accuracy = {round(perf['accuracy'], 3) * 100}%")
   ) +
   xlab(
     "Measured\n(Real class, as predicted by netMHCpan-4.0)"

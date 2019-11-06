@@ -1,3 +1,4 @@
+Sys.unsetenv("RETICULATE_PYTHON")
 
 # Since the API is defined by `plumber/plumber.R`, i.e. inside a subfolder,
 # first copy the `config.yml` to the `plumber` folder

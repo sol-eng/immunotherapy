@@ -11,7 +11,8 @@ pkgs <- c(
   "ggplot2",
   "glue",
   "config",
-  "withr"
+  "withr",
+  "stringr"
 )
 
 to_install <- setdiff(pkgs, installed.packages()[, "Package"])
@@ -38,6 +39,9 @@ if (!"PepTools" %in% installed.packages()[, "Package"]) {
 Sys.unsetenv("RETICULATE_PYTHON")
 
 if (!keras::is_keras_available()) {
-  keras::install_keras()
+  keras::install_keras(
+    tensorflow = "1.13.1",
+    conda_python_version = "3.6.5"
+  )
 }
 

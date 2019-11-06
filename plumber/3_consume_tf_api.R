@@ -1,6 +1,7 @@
-library(httr)
-library(PepTools)
 library(magrittr)
+library(httr)
+library(stringr)
+library(PepTools)
 library(reticulate)
 
 library(config)
@@ -62,13 +63,13 @@ predict_peptide_class_fun <- function(peptide, solo_url = config::get("solo_url_
 
 
 
-test_dat <- c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV",
-              "HQRLAPTMP", "FMNGHTHIA", "KINPYFSGA", "WLLIFHHCP", "NIWLAIIEL"
-)
-
-predict_peptide_class_fun(test_dat)
-predict_peptide_class_fun(test_dat[1:2])
-predict_peptide_class_fun(test_dat[1])
-
-
-
+# test_dat <- c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV",
+#               "HQRLAPTMP", "FMNGHTHIA", "KINPYFSGA", "WLLIFHHCP", "NIWLAIIEL"
+# )
+#
+# predict_peptide_class_fun(test_dat)
+# predict_peptide_class_fun(test_dat[1:2])
+# predict_peptide_class_fun(test_dat[1])
+#
+#
+#
