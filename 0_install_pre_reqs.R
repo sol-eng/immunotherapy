@@ -39,9 +39,6 @@ if (!"PepTools" %in% installed.packages()[, "Package"]) {
 Sys.unsetenv("RETICULATE_PYTHON")
 
 if (!keras::is_keras_available()) {
-  keras::install_keras(
-    tensorflow = "1.13.1",
-    conda_python_version = "3.6.5"
-  )
+  keras::install_keras(tensorflow = "2.0.0")
 }
 

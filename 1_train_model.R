@@ -2,15 +2,16 @@
 
 Sys.unsetenv("RETICULATE_PYTHON")
 
-library(keras)
-library(tfdeploy)
-library(tidyverse)
-library(ggplot2)
-library(glue)
-library(ggseqlogo)
-library(PepTools)
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(keras)
+  library(ggplot2)
+  library(PepTools)
+})
 
-use_implementation("keras")
+# use_implementation("keras")
+
+EPOCHS <- 10
 
 # Download and cache the data locally
 
@@ -24,38 +25,35 @@ pep_file <- get_file(
 
 # Import the data
 
-pep_dat <- read_tsv(file = pep_file)
+pep_dat <- readr::read_tsv(file = pep_file, col_types = "ccdc")
 
 
 # Set up train and test samples
 
-x_train <- pep_dat %>%
-  filter(data_type == "train") %>%
-  pull(peptide) %>%
-  pep_encode()
+encode_x <- function(x, type) {
+  x %>%
+    filter(data_type == {{ type }}) %>%
+    pull(peptide) %>%
+    PepTools::pep_encode() %>%
+    array_reshape(c(nrow(.), 9 * 20))
+}
 
-y_train <- pep_dat %>%
-  filter(data_type == "train") %>%
-  pull(label_num) %>%
-  array()
+encode_y <- function(x, type) {
+  x %>%
+    filter(data_type == {{ type }}) %>%
+    pull(label_num) %>%
+    array() %>%
+    to_categorical(num_classes = 3)
+}
 
-x_test <- pep_dat %>%
-  filter(data_type == "test") %>%
-  pull(peptide) %>%
-  pep_encode()
+x_train <- pep_dat %>% encode_x("train")
+x_test  <- pep_dat %>% encode_x("test")
 
-y_test <- pep_dat %>%
-  filter(data_type == "test") %>%
-  pull(label_num) %>%
-  array()
+y_train <- pep_dat %>% encode_y("train")
+y_test  <- pep_dat %>% encode_y("test")
 
-# Reshape the data into Python recognized format
 
-x_train <- array_reshape(x_train, c(nrow(x_train), 9 * 20))
-x_test  <- array_reshape(x_test, c(nrow(x_test), 9 * 20))
 
-y_train <- to_categorical(y_train, num_classes = 3)
-y_test  <- to_categorical(y_test, num_classes = 3)
 
 
 # Define the model
@@ -83,7 +81,7 @@ history <-
   model %>%
   fit(
     x_train, y_train,
-    epochs = 10,
+    epochs = EPOCHS,
     batch_size = 64,
     validation_split = 0.2
   )
@@ -140,5 +138,10 @@ results %>%
 
 # save model for deployment -----------------------------------------------
 
+## This is the old way.
+# model %>%
+#   export_savedmodel("saved_models")
+
+# And this is the recommended way
 model %>%
-  export_savedmodel(export_dir_base =  "saved_models")
+  save_model_tf("saved_models")
