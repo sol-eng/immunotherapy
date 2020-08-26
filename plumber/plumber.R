@@ -24,7 +24,7 @@ mod <- keras::load_model_tf(file.path(fs::path_dir(mod_pinned[1]), "saved_model"
 #* @apiTitle Immunotherapy
 
 #* Predict peptide class
-#* @param peptide Character vector with a single peptide, eg. `"LLTDAQRIV"` or comma separated, e.g. `"LLTDAQRIV, LMAFYLYEV, VMSPITLPT, SLHLTNCFV, RQFTCMIAV"`
+#* @param peptide Character vector with a single peptide, eg. `LLTDAQRIV` or comma separated, e.g. `LLTDAQRIV, LMAFYLYEV, VMSPITLPT, SLHLTNCFV, RQFTCMIAV`
 #* @get /predict
 function(peptide){
   # Peptide classes for prediction
@@ -34,8 +34,7 @@ function(peptide){
   peptide <- trimws(strsplit(peptide, ",")[[1]])
 
   # transform input into flattened array
-  x_val <-
-    peptide %>%
+  x_val <- peptide %>%
     pep_encode() %>%
     array_reshape(dim = c(nrow(.), 9*20))
 
