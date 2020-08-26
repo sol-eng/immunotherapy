@@ -1,6 +1,6 @@
 # https://blogs.rstudio.com/tensorflow/posts/2018-01-29-dl-for-cancer-immunotherapy/
 
-Sys.unsetenv("RETICULATE_PYTHON")
+# Sys.unsetenv("RETICULATE_PYTHON")
 
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -144,4 +144,4 @@ results %>%
 
 # And this is the recommended way
 model %>%
-  save_model_tf("saved_models")
+  save_model_tf("saved_model")
