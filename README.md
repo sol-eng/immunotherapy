@@ -142,31 +142,22 @@ Then follow these steps:
 
 2.  Publish the model to Connect
     
-      - At the moment there is no push-button deployment of TensorFlow
-        models to Connect
-      - Run `2_publish_model.R`
-      - This publishes the model to Connect
-      - Change the permissions to be open the model to the world (no
-        login required)
-      - Make a note of the “Solo URL”
+      - The model will be stored on Connect as a `pin`
+      - See how in 2_publish_model.R
 
-3.  Edit `config.yml` with solo url
+3.  Edit `config.yml` to add RStudio Connect URL and API Key
     
-      - Add your solo url to `solo_url_tensorflow`
+      - You'll need to get the API key, instructions are here: https://docs.rstudio.com/connect/user/api-keys/
 
 4.  Publish the plumber API to Connect
     
-      - Run `4_publish_api.R`
-      - Change the permissions to be open the model to the world (no
-        login required)
-      - Make a note of the “Solo URL”
+      - Run `3_publish_api.R`
+      - Change the content URL to be `immuno_api` (or something else)
       - Try to execute the model from the Swagger page
 
-5.  Edit `config.yml` with solo url
-    
-      - Add your solo url to `solo_url_plumber`
+5.  Edit `config.yml` with content URL you chose if it's not `immuno_api`
 
 6.  Consume the model
     
-      - Open the file `5_consume_api.R`
+      - Open the file `4_consume_api.R`
       - Run the code and watch the predictions flow in\!

@@ -1,35 +1,30 @@
 library(httr)
 library(purrr)
+library(config)
+
+con <- config::get()
 
 predict_peptide <- function(peptide,
-                            solo_url = config::get("solo_url_plumber"))
-{
-  if (substring(solo_url, nchar(solo_url)) != "/") {
-    solo_url <- paste0(solo_url, "/")
-  }
+                            url = file.path(con$rsc_url, con$content_url, "predict")) {
 
-  if(length(peptide > 1)) {
+  if(length(peptide) > 1) {
     peptide <- paste(peptide, collapse = ",")
   }
 
-  api_url <- paste0(solo_url, "predict")
-
-  r <- GET(
-    api_url,
-    query = list(peptide = peptide),
-    encode = "json", content_type_json()
-  )
-  stop_for_status(r)
-  rc <- content(r)
-
-  rc %>% map_dfr(
-    ~as.data.frame(., stringsAsFactors = FALSE)
-  )
+  url %>%
+    httr::GET(
+      query = list(peptide = peptide),
+      encode = "json",
+      httr::content_type_json()
+    ) %>%
+    httr::stop_for_status() %>%
+    httr::content() %>%
+    map_dfr(tibble::as_tibble)
 }
 
 # Test it
 
-predict_peptide(peptide = "LLTDAQRIV")
+predict_peptide("LLTDAQRIV")
 predict_peptide("LLTDAQRIV, LMAFYLYEV, VMSPITLPT, SLHLTNCFV, RQFTCMIAV")
 predict_peptide(c("LLTDAQRIV", "LMAFYLYEV", "VMSPITLPT", "SLHLTNCFV", "RQFTCMIAV"))
 
