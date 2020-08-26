@@ -36,8 +36,6 @@ if (!"PepTools" %in% installed.packages()[, "Package"]) {
 
 # install keras if necessary ----------------------------------------------
 
-Sys.unsetenv("RETICULATE_PYTHON")
-
 if (!keras::is_keras_available()) {
   keras::install_keras(tensorflow = "2.0.0")
 }
