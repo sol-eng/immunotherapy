@@ -15,7 +15,8 @@ predict_peptide <- function(peptide,
     httr::GET(
       query = list(peptide = peptide),
       encode = "json",
-      httr::content_type_json()
+      httr::content_type_json(),
+      add_headers(Authorization = paste0("Key ", con$rsc_api_key))
     ) %>%
     httr::stop_for_status() %>%
     httr::content() %>%
